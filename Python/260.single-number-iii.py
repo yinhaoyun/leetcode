@@ -4,12 +4,18 @@ from typing import List
 
 class Solution:
     def singleNumber(self, nums: List[int]) -> List[int]:
-        dic = collections.defaultdict(lambda: 0)
+        diff = 0
         for n in nums:
-            dic[n] += 1
-            if dic[n] == 2:
-                del dic[n]
-        return dic.keys()
+            diff ^= n
+        diff &= -diff
+
+        ret = [0, 0]
+        for n in nums:
+            if n & diff:
+                ret[0] ^= n
+            else:
+                ret[1] ^= n
+        return ret
 
 
 s = Solution()
