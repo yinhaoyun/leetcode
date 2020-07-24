@@ -3,26 +3,16 @@ from typing import List
 
 class Solution:
     def allPathsSourceTarget(self, graph: List[List[int]]) -> List[List[int]]:
-        path = dict()
-        j = len(graph) - 1
+        def dfs(formed: List[int]) -> None:
+            if formed[-1] == (n - 1):
+                sol.append(formed)
+                return
+            for i in graph[formed[-1]]:
+                dfs(formed + [i])
 
-        def find_path(i: int) -> List[int]:
-            if path.get(i):
-                pass
-            elif i == j:  # end
-                path[i] = [[i]]
-                # print(i, path[i])
-            else:
-                path[i] = []
-                for n in graph[i]:
-                    ext_path = find_path(n)
-                    if ext_path:
-                        for p in ext_path:
-                            path[i].append([i] + p)
-                # print(i, path[i])
-            return path[i]
-
-        return find_path(0)
+        sol, n = [], len(graph)
+        dfs([0])
+        return sol
 
 
 s = Solution()
