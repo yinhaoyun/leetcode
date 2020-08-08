@@ -1,7 +1,7 @@
 import collections
 from typing import List
 
-from Python.data_structure.tree_node import TreeNode
+from .tree_node import TreeNode
 
 
 class BinaryTree:
