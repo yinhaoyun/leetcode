@@ -1,6 +1,6 @@
 from typing import List
 
-from Python.data_structure.ListNode import ListNode
+from .list_node import ListNode
 
 
 class LinkedList:
