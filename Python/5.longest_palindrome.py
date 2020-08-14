@@ -3,9 +3,7 @@ import collections
 
 class Solution:
     def longestPalindrome(self, s: str) -> str:
-        counts = collections.Counter(s)
-        odds = [c % 2 for c in counts.values() if c % 2]
-        return len(s) - ((len(odds) - 1) if len(odds) else 0)
+        return len(s) - ((len(odds) - 1) if len(odds := [c % 2 for c in collections.Counter(s).values() if c % 2]) else 0)
 
 
 
