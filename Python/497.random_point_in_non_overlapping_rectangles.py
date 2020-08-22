@@ -1,6 +1,6 @@
 from bisect import bisect
 from itertools import accumulate
-from random import randrange
+from random import randrange, randint
 from random import random
 from typing import List
 
@@ -10,15 +10,13 @@ class Solution:
 
     def __init__(self, rects: List[List[int]]):
         self.rects = rects
-        weights = [(x2 - x1 + 1) * (y2 - y1 + 1) for x1, y1, x2, y2 in rects]
-        self.weights = [w / sum(weights) for w in accumulate(weights)]
+        self.weights = list(accumulate([(x2 - x1 + 1) * (y2 - y1 + 1) for x1, y1, x2, y2 in rects]))
 
     # Runtime: 208 ms, faster than 76.02%
     def pick(self) -> List[int]:
-        rect_index = bisect(self.weights, random())
+        rect_index = bisect(self.weights, randrange(0, self.weights[-1]))
         x1, y1, x2, y2 = self.rects[rect_index]
-        x, y = randrange(x1, x2 + 1), randrange(y1, y2 + 1)
-        return [x, y]
+        return [randint(x1, x2), randint(y1, y2)]
 
     # Runtime: 316 ms, faster than 14.03%
     def my_binary_search(self) -> List[int]:
