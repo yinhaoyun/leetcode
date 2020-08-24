@@ -3,10 +3,28 @@ from collections import deque
 from data_structure.binary_tree import BinaryTree
 from data_structure.tree_node import TreeNode
 
+
 class Solution:
     """
     https://leetcode.com/problems/sum-of-left-leaves/
     """
+
+    # Single Queue
+    def sumOfLeftLeaves(self, root: TreeNode) -> int:
+        if not root:
+            return 0
+        result, q = 0, deque([(root, False)])
+        while q:
+            node, is_left = q.popleft()
+            if is_left and not node.left and not node.right:
+                result += node.val
+                continue
+            if node.left:
+                q.append((node.left, True))
+            if node.right:
+                q.append((node.right, False))
+        return result
+
     def recursive_dfs(self, root: TreeNode) -> int:
         res = 0
         if root and root.left:
@@ -17,8 +35,8 @@ class Solution:
             res += self.sumOfLeftLeaves(root.right)
         return res
 
-    # queue
-    def sumOfLeftLeaves(self, root: TreeNode) -> int:
+    # Double Queue
+    def double_queue(self, root: TreeNode) -> int:
         if not root:
             return 0
         result, lefts, others = 0, deque([]), deque([root])
@@ -42,5 +60,5 @@ if __name__ == '__main__':
     s = Solution()
     tree = BinaryTree([3, 9, 20, None, None, 15, 7], skip_none_children=False)
     print(s.sumOfLeftLeaves(tree.root))  # 24
-    tree = BinaryTree([1,2,3,4,5])
+    tree = BinaryTree([1, 2, 3, 4, 5])
     print(s.sumOfLeftLeaves(tree.root))  # 4
