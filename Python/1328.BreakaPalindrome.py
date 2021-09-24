@@ -1,20 +1,13 @@
 class Solution:
     def breakPalindrome(self, palindrome: str) -> str:
         N = len(palindrome)
-        if N <= 1:
-            return ""
-        pld_list = list(palindrome)
+        if N <= 1: return ""
 
-        if pld_list[0] != "a":
-            pld_list[0] = "a"
-        else:
-            for i in range(N//2):
-                if pld_list[i] != "a":
-                    pld_list[i] = "a"
-                    break
-            else:
-                pld_list[N-1] = "b"
-        return "".join(pld_list)
+        for i in range(N//2):
+            if palindrome[i] != "a":
+                return palindrome[:i] + "a" + palindrome[i+1:]
+        return palindrome[:-1] + "b"
+
 
 if __name__ == "__main__":
     s = Solution()
