@@ -2,32 +2,33 @@ from typing import List
 
 
 class Solution:
-    def exist(self, board: List[List[str]], word: str) -> bool:
-        cy = len(board)
-        cx = len(board[0])
-        seen = [[0 for x in range(cx)] for i in range(cy)]
-        # print(board, seen, word)
+    DIRS = [(0, 1), (1, 0), (0, -1), (-1, 0)]
 
-        def dfs(x: int, y: int, cur: int) -> bool:
-            # print("dfs", x, y, cur, word[cur], board[y][x], seen)
-            if seen[y][x] == 1 or cur >= len(word) or word[cur] != board[y][x]:
-                # if seen[y][x] == 1:
-                #     print("seen[y][x] == 1")
-                # if cur >= len(word):
-                #     print("cur >= len(word)")
-                # if word[cur] != board[y][x]:
-                #     print("word[cur] != board[y][x]")
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        n_r, n_c, n_w = len(board), len(board[0]), len(word)
+        is_visited = [[0] * n_c for _ in range(n_r)]
+
+        def dfs(y: int, x: int, d: int) -> bool:
+            nonlocal board, word, n_r, n_c, n_w, is_visited
+            if not (0 <= y < n_r and 0 <= x < n_c) or is_visited[y][x] or board[y][x] != word[d]:
                 return False
-            if cur == len(word) - 1:
+
+            if d == n_w - 1:
                 return True
-            seen[y][x] = 1
-            if (x < cx - 1 and dfs(x + 1, y, cur + 1)) or \
-                    (y < cy - 1 and dfs(x, y + 1, cur + 1)) or \
-                    (x > 0 and dfs(x - 1, y, cur + 1)) or \
-                     (y > 0 and dfs(x, y - 1, cur + 1)):
-                return True
-            seen[y][x] = 0
+            is_visited[y][x] = True
+            for dy, dx in Solution.DIRS:
+                if dfs(y + dy, x + dx, d + 1):
+                    return True
+
+            is_visited[y][x] = False
             return False
+
+        for y in range(n_r):
+            for x in range(n_c):
+                if dfs(y, x, 0):
+                    return True
+
+        return False
 
         for y, r in enumerate(board):
             for x, c in enumerate(r):
