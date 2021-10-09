@@ -6,13 +6,8 @@ class TrieNode:
         self.children = dict()
         self.is_end = False
 
-
-class Trie:
-    def __init__(self):
-        self.root = TrieNode()
-
     def insert(self, word):
-        node = self.root
+        node = self
         for c in word:
             if c not in node.children:
                 node.children[c] = TrieNode()
@@ -24,13 +19,13 @@ class Solution:
     DIRS = [(1, 0), (0, 1), (-1, 0), (0, -1)]
 
     def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
-        trie = Trie()
+        trie = TrieNode()
         ans = []
         for w in words:
             trie.insert(w)
         for y in range(len(board)):
             for x in range(len(board[0])):
-                self.dfs(y, x, board, trie.root, "", ans)
+                self.dfs(y, x, board, trie, "", ans)
 
         return ans
 
