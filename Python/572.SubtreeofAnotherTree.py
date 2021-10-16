@@ -5,7 +5,31 @@
 #         self.left = left
 #         self.right = right
 class Solution:
+    # merkle tree
     def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
+        from hashlib import sha256
+        def hash(data: str):
+            s = sha256()
+            s.update(data.encode('ascii'))
+            return s.hexdigest()
+        def merkle(node):
+            if not node:
+                return "_"
+            node.merkle = hash(merkle(node.left) + str(node.val) + merkle(node.right))
+            return node.merkle
+        merkle(root)
+        merkle(subRoot)
+
+        def dfs(node) -> bool:
+            nonlocal subRoot
+            if not node:
+                return False
+            return node.merkle == subRoot.merkle or \
+                    dfs(node.left) or dfs(node.right)
+        return dfs(root)
+
+
+    def isSubtree_compare_whole_tree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
 
         def is_same(p, q) -> bool:
             if not p and not q: return True
